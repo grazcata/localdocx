@@ -137,6 +137,28 @@ function setupEditorEvents() {
     }, 400);
   });
 
+  const editorContainer = document.querySelector('.editor-container');
+
+  // Auto-scroll caret into view on Enter or typing
+  editor.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      setTimeout(() => {
+        const selection = window.getSelection();
+        if (selection && selection.rangeCount > 0 && editorContainer) {
+          const range = selection.getRangeAt(0);
+          const rect = range.getBoundingClientRect();
+          const containerRect = editorContainer.getBoundingClientRect();
+          if (rect.bottom > containerRect.bottom - 100) {
+            editorContainer.scrollBy({
+              top: rect.bottom - containerRect.bottom + 120,
+              behavior: 'smooth'
+            });
+          }
+        }
+      }, 10);
+    }
+  });
+
   const pageSheet = document.querySelector('.page-sheet');
   if (pageSheet) {
     pageSheet.addEventListener('click', (e) => {

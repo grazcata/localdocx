@@ -4,26 +4,51 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Mosque dome -->
+
+    <!-- Document Sheet in background -->
     <path
-        android:pathData="M54,28 C40,28 32,42 32,52 L32,78 L76,78 L76,52 C76,42 68,28 54,28Z"
-        android:strokeWidth="2"
-        android:strokeColor="#FFFFFF"
-        android:fillColor="#00000000"/>
-    <!-- Crescent -->
+        android:pathData="M44,28 L76,28 C78.2,28 80,29.8 80,32 L80,74 C80,76.2 78.2,78 76,78 L44,78 C41.8,78 40,76.2 40,74 L40,32 C40,29.8 41.8,28 44,28 Z"
+        android:fillColor="#E8F1FC"/>
+
+    <!-- Document Lines -->
     <path
-        android:pathData="M54,34 A6,6 0 1,1 54,22 A5,5 0 1,0 54,34Z"
+        android:pathData="M52,38 L72,38 M52,45 L72,45 M52,52 L72,52 M52,59 L66,59"
+        android:strokeWidth="2.5"
+        android:strokeColor="#2B78D4"
+        android:strokeLineCap="round"/>
+
+    <!-- Word Tile ("W") -->
+    <path
+        android:pathData="M24,36 L52,36 C54.2,36 56,37.8 56,40 L56,68 C56,70.2 54.2,72 52,72 L24,72 C21.8,72 20,70.2 20,68 L20,40 C20,37.8 21.8,36 24,36 Z"
+        android:fillColor="#103F91"/>
+
+    <!-- White Bold 'W' -->
+    <path
+        android:pathData="M27,44 L31,64 L36,44 L40,64 L44,44 L49,44 L43,65 L38,48 L33,65 L27,44 Z"
         android:fillColor="#FFFFFF"/>
-    <!-- Door -->
+
+    <!-- Local / Offline Badge (Circle) -->
     <path
-        android:pathData="M48,78 L48,66 C48,62 60,62 60,66 L60,78"
-        android:strokeWidth="1.5"
-        android:strokeColor="#FFFFFF"
-        android:fillColor="#00000000"/>
-    <!-- Base -->
+        android:pathData="M76,72 m -13,0 a 13,13 0 1,0 26,0 a 13,13 0 1,0 -26,0"
+        android:fillColor="#10B981"/>
+
+    <!-- Local Storage / Drive Icon inside Badge -->
+    <!-- Drive body -->
     <path
-        android:pathData="M28,78 L80,78"
-        android:strokeWidth="2"
+        android:pathData="M69,67 L83,67 C84.1,67 85,67.9 85,69 L85,76 C85,77.1 84.1,78 83,78 L69,78 C67.9,78 67,77.1 67,76 L67,69 C67,67.9 67.9,67 69,67 Z"
+        android:strokeWidth="1.6"
         android:strokeColor="#FFFFFF"
-        android:fillColor="#00000000"/>
+        android:fillColor="#059669"/>
+    <!-- Drive Activity LED & Slot -->
+    <path
+        android:pathData="M70,74 L78,74"
+        android:strokeWidth="1.4"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M81,74 A1,1 0 1,1 81.1,74"
+        android:strokeWidth="1.6"
+        android:strokeColor="#FFFFFF"
+        android:strokeLineCap="round"/>
+
 </vector>

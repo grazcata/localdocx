@@ -232,52 +232,42 @@ html, body {
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
   overscroll-behavior-y: contain;
-  display: flex;
-  justify-content: center;
-  padding: 12px 6px 160px 6px;
-  background-color: var(--bg-app);
+  display: block;
+  background-color: var(--bg-page);
+  padding: 0;
 }
 
 .page-sheet {
   width: 100%;
   max-width: 820px;
-  min-height: auto;
+  margin: 0 auto;
+  min-height: 100%;
+  height: auto;
   background-color: var(--bg-page);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  box-shadow: var(--shadow-md);
-  padding: 24px 20px 100px 20px;
+  padding: 16px 16px 260px 16px;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: none;
   cursor: text;
   touch-action: pan-y;
 }
 
-@media (max-width: 768px) {
-  .editor-container {
-    padding: 8px 4px 180px 4px;
-  }
-  .page-sheet {
-    padding: 16px 14px 120px 14px;
-    border-radius: 6px;
-    box-shadow: none;
-    border: 1px solid var(--border-color);
-  }
-  #editor {
-    min-height: 350px;
-    font-size: 15px;
-  }
-}
-
 @media (min-width: 769px) {
+  .editor-container {
+    background-color: var(--bg-app);
+    padding: 24px 16px 200px 16px;
+  }
   .page-sheet {
-    padding: 56px 64px 100px 64px;
+    border: 1px solid var(--border-color);
     border-radius: 10px;
-    min-height: 700px;
+    box-shadow: var(--shadow-md);
+    padding: 56px 64px 160px 64px;
   }
 }
 
 #editor {
   outline: none;
-  min-height: 350px;
+  min-height: 100%;
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-main);

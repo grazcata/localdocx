@@ -4,12 +4,12 @@
   "description": "Éditeur de documents DOCX 100% local et privé pour Android",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f1f5f9",
-  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "theme_color": "#103f91",
   "orientation": "any",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%232563eb'><rect width='512' height='512' rx='128' fill='%232563eb'/><path d='M336 96H176a32 32 0 0 0-32 32v256a32 32 0 0 0 32 32h160a32 32 0 0 0 32-32V128a32 32 0 0 0-32-32zm-16 240H192v-32h128v32zm0-64H192v-32h128v32zm0-64H192v-32h128v32z' fill='white'/></svg>",
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 108'><rect width='108' height='108' rx='24' fill='%23103F91'/><path d='M44 28h32a4 4 0 0 1 4 4v42a4 4 0 0 1-4 4H44a4 4 0 0 1-4-4V32a4 4 0 0 1 4-4z' fill='%23E8F1FC'/><path d='M52 38h20M52 45h20M52 52h20M52 59h14' stroke='%232B78D4' stroke-width='2.5' stroke-linecap='round'/><path d='M24 36h28a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H24a4 4 0 0 1-4-4V40a4 4 0 0 1 4-4z' fill='%23185ABD'/><path d='M27 44l4 20 5-20 4 20 4-20h5l-6 21-5-17-5 17-6-21z' fill='%23FFF'/><circle cx='76' cy='72' r='13' fill='%2310B981'/><rect x='68' y='67' width='16' height='10' rx='2' fill='%23059669' stroke='%23FFF' stroke-width='1.6'/><line x1='71' y1='74' x2='79' y2='74' stroke='%23FFF' stroke-width='1.4' stroke-linecap='round'/><circle cx='81.5' cy='74' r='0.8' fill='%23FFF'/></svg>",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
