@@ -1,0 +1,30 @@
+{
+  "name": "localdocx",
+  "version": "1.0.0",
+  "description": "Application d'édition de documents Word (.docx) 100% locale, privée et hors-ligne pour Android et Desktop",
+  "main": "dist/app.bundle.js",
+  "scripts": {
+    "build:vendor": "esbuild src/vendor.js --bundle --minify --format=iife --outfile=dist/vendor.bundle.js",
+    "build:app": "esbuild src/app.js --bundle --minify --format=iife --outfile=dist/app.bundle.js",
+    "build": "npm run build:vendor && npm run build:app"
+  },
+  "keywords": [
+    "docx",
+    "word-processor",
+    "local-first",
+    "offline",
+    "pwa",
+    "android",
+    "rust"
+  ],
+  "author": "grazcata",
+  "license": "MIT",
+  "dependencies": {
+    "docx": "^9.15.1",
+    "jszip": "^3.10.2",
+    "mammoth": "^1.13.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2"
+  }
+}
