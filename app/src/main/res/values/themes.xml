@@ -1,0 +1,9 @@
+<resources>
+    <style name="Theme.LocalDocx" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#2563EB</item>
+        <item name="colorPrimaryVariant">#1D4ED8</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="android:statusBarColor">#2563EB</item>
+        <item name="android:navigationBarColor">#F1F5F9</item>
+    </style>
+</resources>

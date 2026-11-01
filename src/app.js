@@ -342,8 +342,21 @@ function setupFileHandlers() {
         
         const blob = await window.docx.Packer.toBlob(docxDoc);
         
-        // Trigger direct browser/mobile download to device storage
         const fileName = `${title.replace(/[/\\?%*:|"<>]/g, '_')}.docx`;
+
+        // If running inside Android Native APK Bridge
+        if (window.AndroidBridge && typeof window.AndroidBridge.saveDocxFile === 'function') {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const base64Data = reader.result;
+            window.AndroidBridge.saveDocxFile(base64Data, fileName);
+            setSaveStatus('Enregistré dans Téléchargements');
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+
+        // Standard browser / PWA download to device storage
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;

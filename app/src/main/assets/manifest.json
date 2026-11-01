@@ -1,0 +1,18 @@
+{
+  "name": "LocalDocx - Éditeur Word Hors-ligne",
+  "short_name": "LocalDocx",
+  "description": "Éditeur de documents DOCX 100% local et privé pour Android",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#2563eb",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%232563eb'><rect width='512' height='512' rx='128' fill='%232563eb'/><path d='M336 96H176a32 32 0 0 0-32 32v256a32 32 0 0 0 32 32h160a32 32 0 0 0 32-32V128a32 32 0 0 0-32-32zm-16 240H192v-32h128v32zm0-64H192v-32h128v32zm0-64H192v-32h128v32z' fill='white'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
