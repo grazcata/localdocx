@@ -1,6 +1,6 @@
 {
   "name": "localdocx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Application d'édition de documents Word (.docx) 100% locale, privée et hors-ligne pour Android et Desktop",
   "main": "dist/app.bundle.js",
   "scripts": {

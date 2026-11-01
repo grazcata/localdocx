@@ -136,6 +136,15 @@ function setupEditorEvents() {
       saveCurrentDocument();
     }, 400);
   });
+
+  const pageSheet = document.querySelector('.page-sheet');
+  if (pageSheet) {
+    pageSheet.addEventListener('click', (e) => {
+      if (e.target === pageSheet) {
+        editor.focus();
+      }
+    });
+  }
 }
 
 // Toolbar Setup

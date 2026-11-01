@@ -60,8 +60,12 @@ class MainActivity : AppCompatActivity() {
         settings.setSupportZoom(true)
         settings.builtInZoomControls = true
         settings.displayZoomControls = false
-        settings.useWideViewPort = true
-        settings.loadWithOverviewMode = true
+        settings.useWideViewPort = false
+        settings.loadWithOverviewMode = false
+
+        webView.isVerticalScrollBarEnabled = true
+        webView.isScrollbarFadingEnabled = true
+        webView.overScrollMode = WebView.OVER_SCROLL_IF_CONTENT_SCROLLS
 
         webView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
