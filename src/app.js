@@ -167,6 +167,13 @@ function setupEditorEvents() {
       }
     });
   }
+
+  // Ensure touch tap anywhere in editor or its elements focuses and allows typing on Android
+  editor.addEventListener('touchend', () => {
+    if (document.activeElement !== editor && !editor.contains(document.activeElement)) {
+      editor.focus();
+    }
+  });
 }
 
 // Toolbar Setup
@@ -446,6 +453,40 @@ function escapeHtml(str) {
     }[tag] || tag)
   );
 }
+
+// Expose global method for Android Native Bridge to import DOCX files
+window.loadDocxFromBase64 = async function(base64Data, fileName) {
+  try {
+    setSaveStatus('Ouverture du fichier...');
+    const binaryString = atob(base64Data.replace(/\s/g, ''));
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    const arrayBuffer = bytes.buffer;
+
+    const result = await window.mammoth.convertToHtml({ arrayBuffer });
+    const cleanTitle = (fileName || 'Document').replace(/\.docx$/i, '');
+
+    const newDoc = {
+      id: 'doc_' + Date.now(),
+      title: cleanTitle,
+      content: result.value || '<p></p>',
+      updatedAt: Date.now()
+    };
+
+    state.docs.unshift(newDoc);
+    saveDocsToStorage();
+    openDocument(newDoc.id);
+    editor.focus();
+    setSaveStatus('Fichier ouvert');
+  } catch (err) {
+    console.error('Erreur chargement DOCX depuis Base64:', err);
+    alert('Erreur lors de l\'ouverture du document : ' + err.message);
+    setSaveStatus('Erreur');
+  }
+};
 
 // Auto bootstrap when DOM ready
 if (document.readyState === 'loading') {

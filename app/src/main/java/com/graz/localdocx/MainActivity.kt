@@ -48,7 +48,77 @@ class MainActivity : AppCompatActivity() {
 
         setupWebView()
         webView.loadUrl("file:///android_asset/index.html")
+
+        handleIncomingIntent(intent)
     }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        intent?.let { handleIncomingIntent(it) }
+    }
+
+    private var pendingDocxJson: String? = null
+
+    private fun handleIncomingIntent(intent: Intent) {
+        val action = intent.action
+        val uri: Uri? = when (action) {
+            Intent.ACTION_VIEW, Intent.ACTION_EDIT -> intent.data
+            Intent.ACTION_SEND -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM, Uri::class.java)
+                } else {
+                    @Suppress("DEPRECATION")
+                    intent.getParcelableExtra(Intent.EXTRA_STREAM) as? Uri
+                }
+            }
+            else -> null
+        }
+
+        if (uri != null) {
+            readAndDispatchUri(uri)
+        }
+    }
+
+    private fun readAndDispatchUri(uri: Uri) {
+        try {
+            var fileName = "Document_Importe.docx"
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            cursor?.use {
+                if (it.moveToFirst()) {
+                    val nameIndex = it.getColumnIndex(android.provider.OpenableColumns.DISPLAY_NAME)
+                    if (nameIndex != -1) {
+                        val name = it.getString(nameIndex)
+                        if (!name.isNullOrBlank()) {
+                            fileName = name
+                        }
+                    }
+                }
+            }
+
+            val inputStream = contentResolver.openInputStream(uri) ?: return
+            val bytes = inputStream.use { it.readBytes() }
+            val base64 = Base64.encodeToString(bytes, Base64.NO_WRAP)
+            
+            val safeName = fileName.replace("\"", "\\\"").replace("'", "\\'")
+            val jsCall = "window.loadDocxFromBase64 && window.loadDocxFromBase64(\"$base64\", \"$safeName\");"
+
+            if (isWebViewLoaded) {
+                runOnUiThread {
+                    webView.evaluateJavascript(jsCall, null)
+                }
+            } else {
+                pendingDocxJson = jsCall
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            runOnUiThread {
+                Toast.makeText(this, "Impossible d'ouvrir le fichier : ${e.message}", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private var isWebViewLoaded = false
 
     private fun setupWebView() {
         val settings = webView.settings
@@ -67,7 +137,21 @@ class MainActivity : AppCompatActivity() {
         webView.isScrollbarFadingEnabled = true
         webView.overScrollMode = WebView.OVER_SCROLL_IF_CONTENT_SCROLLS
 
+        // Enable touch and keyboard interaction
+        webView.isFocusable = true
+        webView.isFocusableInTouchMode = true
+        webView.requestFocus(android.view.View.FOCUS_DOWN)
+
         webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                isWebViewLoaded = true
+                pendingDocxJson?.let {
+                    webView.evaluateJavascript(it, null)
+                    pendingDocxJson = null
+                }
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 val url = request?.url?.toString() ?: return false
                 if (url.startsWith("file://") || url.startsWith("data:")) {
