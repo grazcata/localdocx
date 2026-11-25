@@ -1,7 +1,9 @@
 package com.graz.localdocx
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ContentValues
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -9,6 +11,8 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Base64
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.webkit.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -120,6 +124,7 @@ class MainActivity : AppCompatActivity() {
 
     private var isWebViewLoaded = false
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun setupWebView() {
         val settings = webView.settings
         settings.javaScriptEnabled = true
@@ -141,6 +146,14 @@ class MainActivity : AppCompatActivity() {
         webView.isFocusable = true
         webView.isFocusableInTouchMode = true
         webView.requestFocus(android.view.View.FOCUS_DOWN)
+        webView.setOnTouchListener { v, event ->
+            if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_UP) {
+                if (!v.hasFocus()) {
+                    v.requestFocus()
+                }
+            }
+            false
+        }
 
         webView.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
@@ -193,11 +206,35 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Bridge to save files directly to Android Download directory
-        webView.addJavascriptInterface(WebAppInterface(this), "AndroidBridge")
+        // Bridge to save files directly to Android Download directory and manage soft keyboard
+        val webAppInterface = WebAppInterface(this, webView)
+        webView.addJavascriptInterface(webAppInterface, "AndroidBridge")
+        webView.addJavascriptInterface(webAppInterface, "Android")
     }
 
-    class WebAppInterface(private val activity: Activity) {
+    class WebAppInterface(private val activity: Activity, private val webView: WebView) {
+        @JavascriptInterface
+        fun showSoftInput() {
+            activity.runOnUiThread {
+                if (!webView.hasFocus()) {
+                    webView.requestFocus()
+                }
+                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                val shown = imm?.showSoftInput(webView, InputMethodManager.SHOW_IMPLICIT)
+                if (shown != true) {
+                    imm?.showSoftInput(webView, 0)
+                }
+            }
+        }
+
+        @JavascriptInterface
+        fun hideSoftInput() {
+            activity.runOnUiThread {
+                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(webView.windowToken, 0)
+            }
+        }
+
         @JavascriptInterface
         fun saveDocxFile(base64Data: String, fileName: String) {
             activity.runOnUiThread {

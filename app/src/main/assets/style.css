@@ -230,9 +230,10 @@ html, body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  touch-action: pan-y;
+  touch-action: manipulation;
   overscroll-behavior-y: contain;
-  display: block;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg-page);
   padding: 0;
 }
@@ -243,13 +244,16 @@ html, body {
   margin: 0 auto;
   min-height: 100%;
   height: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   background-color: var(--bg-page);
   padding: 16px 16px 260px 16px;
   box-sizing: border-box;
   border: none;
   box-shadow: none;
   cursor: text;
-  touch-action: pan-y;
+  touch-action: manipulation;
 }
 
 @media (min-width: 769px) {
@@ -266,13 +270,22 @@ html, body {
 }
 
 #editor {
+  flex: 1 1 auto;
   outline: none;
-  min-height: 100%;
+  min-height: 350px;
   font-size: 16px;
   line-height: 1.7;
   color: var(--text-main);
   word-break: break-word;
-  touch-action: pan-y;
+  user-select: text;
+  -webkit-user-select: text;
+  cursor: text;
+  touch-action: manipulation;
+}
+
+#editor * {
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 #editor:empty:before {
@@ -305,6 +318,7 @@ html, body {
 }
 
 #editor p {
+  min-height: 1.5em;
   margin-bottom: 12px;
 }
 

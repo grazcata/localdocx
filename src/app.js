@@ -79,7 +79,7 @@ function openDocument(id) {
 
   state.activeDocId = doc.id;
   docTitle.value = doc.title || 'Sans titre';
-  editor.innerHTML = doc.content || '<p></p>';
+  editor.innerHTML = doc.content && doc.content.trim() ? doc.content : '<p><br></p>';
   updateStats();
   renderDocList();
   closeDrawer();
@@ -163,17 +163,56 @@ function setupEditorEvents() {
   if (pageSheet) {
     pageSheet.addEventListener('click', (e) => {
       if (e.target === pageSheet) {
-        editor.focus();
+        focusEditor(true);
       }
     });
   }
 
   // Ensure touch tap anywhere in editor or its elements focuses and allows typing on Android
-  editor.addEventListener('touchend', () => {
-    if (document.activeElement !== editor && !editor.contains(document.activeElement)) {
-      editor.focus();
-    }
+  editor.addEventListener('click', () => {
+    focusEditor(false);
   });
+
+  editor.addEventListener('touchend', () => {
+    setTimeout(() => {
+      focusEditor(false);
+    }, 50);
+  });
+}
+
+export function focusEditor(placeAtEnd = false) {
+  if (!editor) return;
+
+  editor.focus();
+
+  const sel = window.getSelection();
+  if (sel) {
+    if (placeAtEnd || sel.rangeCount === 0) {
+      const range = document.createRange();
+      if (editor.lastChild) {
+        range.selectNodeContents(editor);
+        range.collapse(false);
+      } else {
+        let p = editor.querySelector('p');
+        if (!p) {
+          p = document.createElement('p');
+          p.innerHTML = '<br>';
+          editor.appendChild(p);
+        }
+        range.setStart(p, 0);
+        range.collapse(true);
+      }
+      sel.removeAllRanges();
+      sel.addRange(range);
+    }
+  }
+
+  // Request soft keyboard via native Android bridge
+  if (window.AndroidBridge && typeof window.AndroidBridge.showSoftInput === 'function') {
+    window.AndroidBridge.showSoftInput();
+  } else if (window.Android && typeof window.Android.showSoftInput === 'function') {
+    window.Android.showSoftInput();
+  }
 }
 
 // Toolbar Setup
@@ -264,6 +303,9 @@ function setupDrawer() {
       state.docs.unshift(newDoc);
       saveDocsToStorage();
       openDocument(newDoc.id);
+      setTimeout(() => {
+        focusEditor(false);
+      }, 50);
     });
   }
 }
@@ -479,7 +521,9 @@ window.loadDocxFromBase64 = async function(base64Data, fileName) {
     state.docs.unshift(newDoc);
     saveDocsToStorage();
     openDocument(newDoc.id);
-    editor.focus();
+    setTimeout(() => {
+      focusEditor(false);
+    }, 100);
     setSaveStatus('Fichier ouvert');
   } catch (err) {
     console.error('Erreur chargement DOCX depuis Base64:', err);
